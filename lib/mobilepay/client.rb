@@ -1,14 +1,27 @@
 require 'json'
 require_relative 'client/payment_status'
 require_relative 'client/payment_transactions'
+require_relative 'client/reservations'
+require_relative 'client/refund_amount'
+require_relative 'client/capture_amount'
+require_relative 'client/cancel_reservation'
 require_relative 'requests'
 require_relative 'requests/http_get_request'
+require_relative 'requests/http_put_request'
+require_relative 'requests/http_delete_request'
 
 module Mobilepay
     class Client
         include Mobilepay::Client::PaymentStatus
         include Mobilepay::Client::PaymentTransactions
+        include Mobilepay::Client::Reservations
+        include Mobilepay::Client::RefundAmount
+        include Mobilepay::Client::CaptureAmount
+        include Mobilepay::Client::CancelReservation
+        include Mobilepay::Requests
         include Mobilepay::Requests::HttpGetRequest
+        include Mobilepay::Requests::HttpPutRequest
+        include Mobilepay::Requests::HttpDeleteRequest
 
         class MobilePayFailure < StandardError; end
 
@@ -25,6 +38,8 @@ module Mobilepay
         def call(req, address, args = {})
             response = case req
                 when :get then http_get_request(address, args)
+                when :put then http_put_request(address, args)
+                when :delete then http_delete_request(address, args)
                 else raise MobilePayFailure, 'Undefined  type for call'
             end
             check_response(response)
