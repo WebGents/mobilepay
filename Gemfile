@@ -1,4 +1,8 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in mobilepay.gemspec
+group :test do
+    gem 'rspec'
+    gem 'webmock'
+end
+
 gemspec
