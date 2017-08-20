@@ -28,8 +28,8 @@ module Mobilepay
         attr_reader :merchant_id, :subscription_key, :base_uri
 
         def initialize(args = {})
-            @merchant_id = args[:merchant_id]
-            @subscription_key = args[:subscription_key]
+            @merchant_id = args[:merchant_id] || ''
+            @subscription_key = args[:subscription_key] || ''
             @base_uri = 'https://api.mobeco.dk/appswitch/api/v1'
         end
 
