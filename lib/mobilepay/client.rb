@@ -51,5 +51,13 @@ module Mobilepay
                 raise MobilePayFailure, JSON.parse(response.body)['message']
             end
         end
+
+        def check_args(args)
+            args.each do |arg_name, value|
+                if value.nil? || !value.is_a?(String)
+                    raise MobilePayFailure, "Invalid argument '#{arg_name}', must be string"
+                end
+            end
+        end
     end
 end
