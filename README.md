@@ -32,7 +32,7 @@ Or install it yourself as:
 
 ```ruby
   require 'mobilepay'
-  require 'jwt'
+  require 'jose'
   client = Mobilepay::Client.new merchant_id: 'merchant_id', subscription_key: 'subscription_key', privatekey: OpenSSL::PKey::RSA.new(File.read('key.pvk'))
 ```
     subscription_key - Subscription Key for MobilePay, required
