@@ -5,7 +5,14 @@ module Mobilepay
 
         private
 
-        def generate_uri(address)
+        def http_request(req, address, args = {})
+            uri = generate_uri(address)
+            req = generate_request(req, uri)
+            req = generate_headers(req, args[:body])
+            Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
+        end
+
+        def generate_uri(address = '')
             URI("#{base_uri}#{address}")
         end
 

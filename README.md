@@ -20,7 +20,15 @@ Or install it yourself as:
 
 ## Usage
 
-Create MobilePay object.
+### Create Security object.
+
+```ruby
+  require 'mobilepay'
+  client = Mobilepay::Security.new subscription_key: 'subscription_key'
+```
+    merchant_id - Merchant ID, required
+
+### Create MobilePay object.
 
 ```ruby
   require 'mobilepay'
@@ -29,6 +37,22 @@ Create MobilePay object.
     subscription_key - Subscription Key for MobilePay, required
     merchant_id - Merchant ID, required
 
+### Public Key
+
+Request for getting MobilePay's public key to use when signing up new merchants.
+
+```ruby
+  client.public_key
+```
+
+#### Responces
+
+```ruby
+  {
+    "PublicKey": "-----BEGIN CERTIFICATE-----certificate body-----END CERTIFICATE-----"
+  }
+```
+
 ### Payment Status
 
 Request for getting the status of a given order is #payment_status.
@@ -36,7 +60,6 @@ Request for getting the status of a given order is #payment_status.
 ```ruby
   client.payment_status order_id: '111'
 ```
-
     order_id - Order ID, required
 
 #### Responces
@@ -56,7 +79,6 @@ Request for getting the transactions for a given order is #payment_transactions.
 ```ruby
   client.payment_transactions order_id: '111'
 ```
-
     order_id - Order ID, required
 
 #### Responces
@@ -85,7 +107,6 @@ Request for getting the reservations for a particular date/time interval, and al
 ```ruby
   client.reservations datetime_from: 'YYYY-MM-DDTHH_MM', datetime_to: 'YYYY-MM-DDTHH_MM', customer_id: '111'
 ```
-
     datetime_from - Date from, required
     datetime_to - Date to, required
     customer_id - Customer ID, optional
@@ -118,7 +139,6 @@ Request for refunding the transaction amount, either the entire amount or just a
 ```ruby
   client.refund_amount order_id: '111', body: '{}'
 ```
-
     order_id - Order ID, required
     body - text body for request, optional
 
@@ -155,7 +175,6 @@ Request for capturing the transaction, i.e. carries out the actual payment is #c
 ```ruby
   client.capture_amount order_id: '111', body: '{}'
 ```
-
     order_id - Order ID, required
     body - text body for request, optional
 
@@ -190,7 +209,6 @@ Request for canceling previously made reservations is #cancel_reservation.
 ```ruby
   client.cancel_reservation order_id: '111'
 ```
-
     order_id - Order ID, required
 
 #### Responces

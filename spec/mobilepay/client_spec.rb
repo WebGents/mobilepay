@@ -45,17 +45,6 @@ describe Mobilepay::Client do
             end
         end
 
-        context '.http_request' do
-            it 'returns response from Mobilepay' do
-                stub_request(:get, 'https://api.mobeco.dk/appswitch/api/v1/merchants/111/orders/222').
-                    to_return(status: 200, body: '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}', headers: {})
-                response = client.send(:call, :get, '/merchants/111/orders/222')
-
-                expect(response.code).to eq '200'
-                expect(response.body).to eq  '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}'
-            end
-        end
-
         context '.check_response' do
             context 'for bad request' do
                 it 'raises Failure with message' do
@@ -94,6 +83,17 @@ describe Mobilepay::Client do
     end
 
     describe 'methods from Requests module' do
+        context '.http_request' do
+            it 'returns response from Mobilepay' do
+                stub_request(:get, 'https://api.mobeco.dk/appswitch/api/v1/merchants/111/orders/222').
+                    to_return(status: 200, body: '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}', headers: {})
+                response = client.send(:call, :get, '/merchants/111/orders/222')
+
+                expect(response.code).to eq '200'
+                expect(response.body).to eq  '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}'
+            end
+        end
+        
         context '.generate_uri' do
             it 'returns full address for request' do
                 address = '/merchants/111/orders/222'

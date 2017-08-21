@@ -38,13 +38,6 @@ module Mobilepay
             response
         end
 
-        def http_request(req, address, args = {})
-                uri = generate_uri(address)
-                req = generate_request(req, uri)
-                req = generate_headers(req, args[:body])
-                Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
-            end
-
         def check_response(response)
             if response.code != '200'
                 raise MobilePayFailure, JSON.parse(response.body)['message']
