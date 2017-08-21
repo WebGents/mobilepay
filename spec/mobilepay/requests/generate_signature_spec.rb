@@ -9,7 +9,6 @@ describe Mobilepay::Requests::GenerateSignature do
         it 'returns token for signin' do
             token = client.send(:generate_signature, req)
 
-            puts token
             expect(token).to_not eq ''
         end
     end
