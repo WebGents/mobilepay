@@ -10,7 +10,7 @@ module Mobilepay
                 address += "?customerId=#{args[:customer_id]}" if args[:customer_id]
                 response = call(:get, address, { body: '{}' })
                 JSON.parse(response.body)
-            rescue MobilePayFailure => ex
+            rescue Failure => ex
                 return { error: ex.message }
             end
 

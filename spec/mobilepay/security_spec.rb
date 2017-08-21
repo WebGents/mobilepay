@@ -20,7 +20,7 @@ describe Mobilepay::Security do
                     stub_request(:get, 'https://api.mobeco.dk/merchantsecurity/api/publickey').
                         to_return(status: 401, body: '{"statusCode":401, "message":"Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."}', headers: {})
 
-                    expect { security.send(:call) }.to raise_error(Mobilepay::Security::SecurityFailure, 'Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.')
+                    expect { security.send(:call) }.to raise_error(Mobilepay::Failure, 'Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.')
                 end
             end
 
@@ -42,7 +42,7 @@ describe Mobilepay::Security do
                         to_return(status: 401, body: '{"statusCode":401, "message":"Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."}', headers: {})
                     response = security.send(:http_request, :get, '/publickey')
 
-                    expect { security.send(:check_response, response) }.to raise_error(Mobilepay::Security::SecurityFailure, 'Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.')
+                    expect { security.send(:check_response, response) }.to raise_error(Mobilepay::Failure, 'Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.')
                 end
             end
 

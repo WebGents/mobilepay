@@ -9,8 +9,6 @@ module Mobilepay
         include Mobilepay::Requests
         include Mobilepay::Requests::GenerateSignature
 
-        class SecurityFailure < StandardError; end
-
         attr_reader :subscription_key, :privatekey, :base_uri
 
         def initialize(args = {})
@@ -30,7 +28,7 @@ module Mobilepay
         def check_response(response)
             if response.code != '200'
                 error_message = response.body.empty? ? response.code : JSON.parse(response.body)['message']
-                raise SecurityFailure, error_message
+                raise Failure, error_message
             end
         end
     end

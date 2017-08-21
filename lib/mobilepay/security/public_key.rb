@@ -7,7 +7,7 @@ module Mobilepay
             def public_key
                 response = call
                 JSON.parse(response.body)
-            rescue SecurityFailure => ex
+            rescue Failure => ex
                 return { error: ex.message }
             end
 

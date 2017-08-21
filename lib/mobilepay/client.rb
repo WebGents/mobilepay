@@ -19,8 +19,6 @@ module Mobilepay
         include Mobilepay::Requests
         include Mobilepay::Requests::GenerateSignature
 
-        class MobilePayFailure < StandardError; end
-
         attr_reader :merchant_id, :subscription_key, :privatekey, :base_uri
 
         def initialize(args = {})
@@ -35,7 +33,7 @@ module Mobilepay
         def call(req, address, args = {})
             response = case req
                 when :get, :put, :delete then http_request(req, address, args)
-                else raise MobilePayFailure, 'Undefined  type for call'
+                else raise Failure, 'Undefined  type for call'
             end
             check_response(response)
             response
@@ -44,14 +42,14 @@ module Mobilepay
         def check_response(response)
             if response.code != '200'
                 error_message = response.body.empty? ? response.code : JSON.parse(response.body)['message']
-                raise MobilePayFailure, error_message
+                raise Failure, error_message
             end
         end
 
         def check_args(args)
             args.each do |arg_name, value|
                 if value.nil? || !value.is_a?(String)
-                    raise MobilePayFailure, "Invalid argument '#{arg_name}', must be string"
+                    raise Failure, "Invalid argument '#{arg_name}', must be string"
                 end
             end
         end

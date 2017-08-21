@@ -1,5 +1,5 @@
 require 'digest/sha1'
-require "base64"
+require 'base64'
 require 'jwt'
 
 module Mobilepay

@@ -8,7 +8,7 @@ module Mobilepay
                 check_args(order_id: args[:order_id])
                 response = call(:put, "/merchants/#{merchant_id}/orders/#{args[:order_id]}", { body: args[:body] || '{}' })
                 JSON.parse(response.body)
-            rescue MobilePayFailure => ex
+            rescue Failure => ex
                 return { error: ex.message }
             end
 
