@@ -24,19 +24,20 @@ Create MobilePay object.
 
 ```ruby
   require 'mobilepay'
-  client = Mobilepay::Client.new('merchant_id', 'subscription_key')
+  client = Mobilepay::Client.new merchant_id: 'merchant_id', subscription_key: 'subscription_key'
 ```
+    subscription_key - Subscription Key for MobilePay, required
+    merchant_id - Merchant ID, required
 
 ### Payment Status
 
 Request for getting the status of a given order is #payment_status.
 
 ```ruby
-  client.payment_status order_id: '111', body: '{}'
+  client.payment_status order_id: '111'
 ```
 
     order_id - Order ID, required
-    body - text body for request, optional
 
 #### Responces
 
@@ -53,11 +54,10 @@ Request for getting the status of a given order is #payment_status.
 Request for getting the transactions for a given order is #payment_transactions.
 
 ```ruby
-  client.payment_transactions order_id: '111', body: '{}'
+  client.payment_transactions order_id: '111'
 ```
 
     order_id - Order ID, required
-    body - text body for request, optional
 
 #### Responces
 
@@ -83,13 +83,12 @@ Request for getting the transactions for a given order is #payment_transactions.
 Request for getting the reservations for a particular date/time interval, and alternatively also for a specific customer is #reservations.
 
 ```ruby
-  client.reservations datetime_from: 'YYYY-MM-DDTHH_MM', datetime_to: 'YYYY-MM-DDTHH_MM', customer_id: '111', body: '{}'
+  client.reservations datetime_from: 'YYYY-MM-DDTHH_MM', datetime_to: 'YYYY-MM-DDTHH_MM', customer_id: '111'
 ```
 
     datetime_from - Date from, required
     datetime_to - Date to, required
     customer_id - Customer ID, optional
-    body - text body for request, optional
 
 #### Responces
 
@@ -189,11 +188,10 @@ Request for capturing the transaction, i.e. carries out the actual payment is #c
 Request for canceling previously made reservations is #cancel_reservation.
 
 ```ruby
-  client.cancel_reservation order_id: '111', body: '{}'
+  client.cancel_reservation order_id: '111'
 ```
 
     order_id - Order ID, required
-    body - text body for request, optional
 
 #### Responces
 

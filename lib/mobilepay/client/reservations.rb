@@ -8,7 +8,7 @@ module Mobilepay
                 check_args(datetime_from: args[:datetime_from], datetime_to: args[:datetime_to])
                 address = "/reservations/merchants/#{merchant_id}/#{args[:datetime_from]}/#{args[:datetime_to]}"
                 address += "?customerId=#{args[:customer_id]}" if args[:customer_id]
-                response = call(:get, address, { body: args[:body] || '' })
+                response = call(:get, address, { body: '{}' })
                 JSON.parse(response.body)
             rescue MobilePayFailure => ex
                 return { error: ex.message }
