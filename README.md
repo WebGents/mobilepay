@@ -20,15 +20,15 @@ Or install it yourself as:
 
 ## Usage
 
-### Create Security object.
+### Create Security object
 
 ```ruby
   require 'mobilepay'
-  client = Mobilepay::Security.new subscription_key: 'subscription_key'
+  security = Mobilepay::Security.new subscription_key: 'subscription_key'
 ```
     merchant_id - Merchant ID, required
 
-### Create MobilePay object.
+### Create MobilePay object
 
 ```ruby
   require 'mobilepay'
@@ -42,7 +42,7 @@ Or install it yourself as:
 Request for getting MobilePay's public key to use when signing up new merchants.
 
 ```ruby
-  client.public_key
+  security.public_key
 ```
 
 #### Responces
