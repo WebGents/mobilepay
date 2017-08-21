@@ -15,7 +15,7 @@ module Mobilepay
 
         def initialize(args = {})
             @subscription_key = args[:subscription_key] || ''
-            @privatekey = ''
+            @privatekey = nil
             @base_uri = 'https://api.mobeco.dk/merchantsecurity/api'
         end
 

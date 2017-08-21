@@ -26,7 +26,7 @@ module Mobilepay
         def initialize(args = {})
             @merchant_id = args[:merchant_id] || ''
             @subscription_key = args[:subscription_key] || ''
-            @privatekey = args[:privatekey] || ''
+            @privatekey = args[:privatekey]
             @base_uri = 'https://api.mobeco.dk/appswitch/api/v1'
         end
 
