@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
     spec.email = ['kortirso@gmail.com']
 
     spec.summary = 'Gem for interaction with MobilePay API'
-    spec.description = 'Gem for interaction with MobilePay API'
+    spec.description = 'Actions with payments in MobilePay system'
     spec.homepage = 'https://github.com/kortirso/mobilepay'
     spec.license = 'MIT'
 
@@ -23,5 +23,5 @@ Gem::Specification.new do |spec|
 
     spec.add_development_dependency 'bundler', '~> 1.14'
     spec.add_development_dependency 'rake', '~> 10.0'
-    spec.add_development_dependency 'jose', '~> 1.1.2'
+    spec.add_development_dependency 'jose', '~> 1.1'
 end
