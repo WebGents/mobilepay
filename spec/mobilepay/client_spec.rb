@@ -40,9 +40,19 @@ describe Mobilepay::Client do
                         to_return(status: 200, body: '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}', headers: {})
                     response = client.send(:call, :get, '/merchants/111/orders/222')
 
-                    expect(response.code).to eq '200'
                     expect(response.body).to eq  '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}'
                 end
+            end
+        end
+
+        context '.http_request' do
+            it 'returns response from Mobilepay' do
+                stub_request(:get, 'https://api.mobeco.dk/appswitch/api/v1/merchants/111/orders/222').
+                    to_return(status: 200, body: '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}', headers: {})
+                response = client.send(:call, :get, '/merchants/111/orders/222')
+
+                expect(response.code).to eq '200'
+                expect(response.body).to eq  '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}'
             end
         end
 
@@ -51,7 +61,7 @@ describe Mobilepay::Client do
                 it 'raises Failure with message' do
                     stub_request(:get, 'https://api.mobeco.dk/appswitch/api/v1/merchants/111/orders/222').
                         to_return(status: 401, body: '{"statusCode":401, "message":"Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."}', headers: {})
-                    response = client.send(:http_get_request, '/merchants/111/orders/222')
+                    response = client.send(:http_request, :get, '/merchants/111/orders/222')
 
                     expect { client.send(:check_response, response) }.to raise_error(Mobilepay::Client::MobilePayFailure, 'Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.')
                 end
@@ -61,7 +71,7 @@ describe Mobilepay::Client do
                 it 'returns nil' do
                     stub_request(:get, 'https://api.mobeco.dk/appswitch/api/v1/merchants/111/orders/222').
                         to_return(status: 200, body: '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}', headers: {})
-                    response = client.send(:http_get_request, '/merchants/111/orders/222')
+                    response = client.send(:http_request, :get, '/merchants/111/orders/222')
 
                     expect(client.send(:check_response, response)).to eq nil
                 end

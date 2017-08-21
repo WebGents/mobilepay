@@ -6,9 +6,6 @@ require_relative 'client/refund_amount'
 require_relative 'client/capture_amount'
 require_relative 'client/cancel_reservation'
 require_relative 'requests'
-require_relative 'requests/http_get_request'
-require_relative 'requests/http_put_request'
-require_relative 'requests/http_delete_request'
 
 module Mobilepay
     class Client
@@ -19,9 +16,6 @@ module Mobilepay
         include Mobilepay::Client::CaptureAmount
         include Mobilepay::Client::CancelReservation
         include Mobilepay::Requests
-        include Mobilepay::Requests::HttpGetRequest
-        include Mobilepay::Requests::HttpPutRequest
-        include Mobilepay::Requests::HttpDeleteRequest
 
         class MobilePayFailure < StandardError; end
 
@@ -37,14 +31,19 @@ module Mobilepay
 
         def call(req, address, args = {})
             response = case req
-                when :get then http_get_request(address, args)
-                when :put then http_put_request(address, args)
-                when :delete then http_delete_request(address, args)
+                when :get, :put, :delete then http_request(req, address, args)
                 else raise MobilePayFailure, 'Undefined  type for call'
             end
             check_response(response)
             response
         end
+
+        def http_request(req, address, args = {})
+                uri = generate_uri(address)
+                req = generate_request(req, uri)
+                req = generate_headers(req, args[:body])
+                Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
+            end
 
         def check_response(response)
             if response.code != '200'
