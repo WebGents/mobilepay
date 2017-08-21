@@ -40,7 +40,8 @@ module Mobilepay
 
         def check_response(response)
             if response.code != '200'
-                raise MobilePayFailure, JSON.parse(response.body)['message']
+                error_message = response.body.empty? ? response.code : JSON.parse(response.body)['message']
+                raise MobilePayFailure, error_message
             end
         end
 

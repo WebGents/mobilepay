@@ -40,7 +40,7 @@ describe Mobilepay::Client do
                         to_return(status: 200, body: '{"LatestPaymentStatus":"Captured", "TransactionId":"61872634691623746", "OriginalAmount": 123.45}', headers: {})
                     response = client.send(:call, :get, '/merchants/111/orders/222')
 
-                    expect(response.body).to eq  '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}'
+                    expect(response.body).to eq  '{"LatestPaymentStatus":"Captured", "TransactionId":"61872634691623746", "OriginalAmount": 123.45}'
                 end
             end
         end
@@ -90,7 +90,7 @@ describe Mobilepay::Client do
                 response = client.send(:call, :get, '/merchants/111/orders/222')
 
                 expect(response.code).to eq '200'
-                expect(response.body).to eq  '{"LatestPaymentStatus":"Captured","TransactionId":"61872634691623746","OriginalAmount": 123.45}'
+                expect(response.body).to eq  '{"LatestPaymentStatus":"Captured", "TransactionId":"61872634691623746", "OriginalAmount": 123.45}'
             end
         end
         
