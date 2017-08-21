@@ -8,8 +8,8 @@ module Mobilepay
 
             # Generate Authentication Signature
             def generate_signature(request)
-                payload = (request.uri.to_s + request.body.to_s).force_encoding('UTF-8')
-                payload_sha1 = Digest::SHA1.hexdigest(payload)
+                payload = (request.uri.to_s + request.body.to_s).encode('UTF-8')
+                payload_sha1 = Digest::SHA1.digest(payload)
                 payload_base64 = Base64.encode64(payload_sha1)
 
                 jwk_rs256 = JOSE::JWK.generate_key([:rsa, 1024])
