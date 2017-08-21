@@ -92,4 +92,55 @@ describe Mobilepay::Client do
             end
         end
     end
+
+    describe 'methods from Requests module' do
+        context '.generate_uri' do
+            it 'returns full address for request' do
+                address = '/merchants/111/orders/222'
+
+                expect(client.send(:generate_uri, address).to_s).to eq "#{client.base_uri}#{address}"
+            end
+        end
+
+        context '.generate_request' do
+            let(:uri) { client.send(:generate_uri, '/merchants/111/orders/222') }
+
+            context 'for GET request' do
+                it 'returns Net::HTTP::Get object' do
+                    expect(client.send(:generate_request, :get, uri).class).to eq Net::HTTP::Get
+                end
+            end
+
+            context 'for PUT request' do
+                it 'returns Net::HTTP::Put object' do
+                    expect(client.send(:generate_request, :put, uri).class).to eq Net::HTTP::Put
+                end
+            end
+
+            context 'for Delete request' do
+                it 'returns Net::HTTP::Delete object' do
+                    expect(client.send(:generate_request, :delete, uri).class).to eq Net::HTTP::Delete
+                end
+            end
+        end
+
+        context '.generate_headers' do
+            let(:uri) { client.send(:generate_uri, '/merchants/111/orders/222') }
+            let(:body) { '{}' }
+            let(:base_req) { client.send(:generate_request, :get, uri) }
+            let(:req) { client.send(:generate_headers, base_req, body) }
+
+            it 'contains content-type' do
+                expect(req.to_hash['content-type']).to eq ['application/json']
+            end
+
+            it 'contains ocp-apim-subscription-key' do
+                expect(req.to_hash['ocp-apim-subscription-key']).to eq [client.subscription_key]
+            end
+
+            it 'contains body' do
+                expect(req.body).to eq body
+            end
+        end
+    end
 end

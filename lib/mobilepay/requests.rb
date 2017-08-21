@@ -3,6 +3,8 @@ require 'net/http'
 module Mobilepay
     module Requests
 
+        private
+
         def generate_uri(address)
             URI("#{base_uri}#{address}")
         end
