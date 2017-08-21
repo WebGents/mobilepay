@@ -126,7 +126,7 @@ describe Mobilepay::Client do
 
         context '.generate_headers' do
             let(:uri) { client.send(:generate_uri, '/merchants/111/orders/222') }
-            let(:body) { '{}' }
+            let(:body) { '' }
             let(:base_req) { client.send(:generate_request, :get, uri) }
             let(:req) { client.send(:generate_headers, base_req, body) }
 

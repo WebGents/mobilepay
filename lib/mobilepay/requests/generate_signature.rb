@@ -1,6 +1,6 @@
 require 'digest/sha1'
 require 'base64'
-require 'jwt'
+require 'jose'
 
 module Mobilepay
     module Requests
@@ -11,7 +11,10 @@ module Mobilepay
                 payload = (request.uri.to_s + request.body.to_s).force_encoding('UTF-8')
                 payload_sha1 = Digest::SHA1.hexdigest(payload)
                 payload_base64 = Base64.encode64(payload_sha1)
-                JWT.encode(payload_base64, privatekey, 'RS256')
+
+                jwk_rs256 = JOSE::JWK.generate_key([:rsa, 1024])
+                jwk_rs256.kty.key = privatekey
+                JOSE::JWS.sign(jwk_rs256, payload_base64, { "alg" => "RS256" }).compact
             end
 
         end
