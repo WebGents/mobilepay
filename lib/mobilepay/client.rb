@@ -6,6 +6,7 @@ require_relative 'client/refund_amount'
 require_relative 'client/capture_amount'
 require_relative 'client/cancel_reservation'
 require_relative 'requests'
+require_relative 'requests/generate_signature'
 
 module Mobilepay
     class Client
@@ -16,14 +17,16 @@ module Mobilepay
         include Mobilepay::Client::CaptureAmount
         include Mobilepay::Client::CancelReservation
         include Mobilepay::Requests
+        include Mobilepay::Requests::GenerateSignature
 
         class MobilePayFailure < StandardError; end
 
-        attr_reader :merchant_id, :subscription_key, :base_uri
+        attr_reader :merchant_id, :subscription_key, :privatekey, :base_uri
 
         def initialize(args = {})
             @merchant_id = args[:merchant_id] || ''
             @subscription_key = args[:subscription_key] || ''
+            @privatekey = args[:privatekey] || ''
             @base_uri = 'https://api.mobeco.dk/appswitch/api/v1'
         end
 

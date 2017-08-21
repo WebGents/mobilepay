@@ -27,6 +27,7 @@ module Mobilepay
         def generate_headers(req, body)
             req['Content-Type'] = 'application/json'
             req['Ocp-Apim-Subscription-Key'] = subscription_key
+            req['AuthenticationSignature'] = generate_signature(req) if privatekey != ''
             req.body = body
             req
         end
