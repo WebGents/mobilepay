@@ -12,9 +12,8 @@ module Mobilepay
                 payload_sha1 = Digest::SHA1.digest(payload)
                 payload_base64 = Base64.encode64(payload_sha1)
 
-                jwk_rs256 = JOSE::JWK.generate_key([:rsa, 1024])
-                jwk_rs256.kty.key = privatekey
-                JOSE::JWS.sign(jwk_rs256, payload_base64, { "alg" => "RS256" }).compact
+                jwk = JOSE::JWK.from_pem_file(privatekey)
+                JOSE::JWS.sign(jwk, payload_base64, { "alg" => "RS256" }).compact
             end
 
         end
