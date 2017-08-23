@@ -7,6 +7,7 @@ Actions with payments in MobilePay system.
 Add this line to your application's Gemfile:
 
 ```ruby
+gem 'jose'
 gem 'mobilepay'
 ```
 
@@ -37,7 +38,7 @@ Or install it yourself as:
 ```
     subscription_key - Subscription Key for MobilePay, required
     merchant_id - Merchant ID, required
-    privatekey - Secret key for creating signature for requests, required
+    privatekey - File with secret key for creating signature for requests, required
 
 ### Public Key
 
