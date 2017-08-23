@@ -28,7 +28,7 @@ describe Mobilepay::Client do
                     stub_request(:get, 'https://api.mobeco.dk/appswitch/api/v1/merchants/111/orders/222').
                         to_return(status: 401, body: '{"statusCode":401, "message":"Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."}', headers: {})
 
-                    expect { client.send(:call, :get, '/merchants/111/orders/222') }.to raise_error(Mobilepay::Failure, 'Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.')
+                    expect { client.send(:call, :get, '/merchants/111/orders/222') }.to raise_error(Mobilepay::Failure, '{"statusCode":401, "message":"Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."}')
                 end
             end
 
@@ -50,7 +50,7 @@ describe Mobilepay::Client do
                         to_return(status: 401, body: '{"statusCode":401, "message":"Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."}', headers: {})
                     response = client.send(:http_request, :get, '/merchants/111/orders/222')
 
-                    expect { client.send(:check_response, response) }.to raise_error(Mobilepay::Failure, 'Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.')
+                    expect { client.send(:check_response, response) }.to raise_error(Mobilepay::Failure, '{"statusCode":401, "message":"Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."}')
                 end
             end
 

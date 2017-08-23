@@ -41,14 +41,14 @@ module Mobilepay
 
         def check_response(response)
             if response.code != '200'
-                error_message = response.body.empty? ? response.code : JSON.parse(response.body)['message']
+                error_message = response.body.empty? ? response.code : response.body
                 raise Failure, error_message
             end
         end
 
         def check_args(args)
             args.each do |arg_name, value|
-                if value.nil? || !value.is_a?(String)
+                if value.nil?
                     raise Failure, "Invalid argument '#{arg_name}', must be string"
                 end
             end
