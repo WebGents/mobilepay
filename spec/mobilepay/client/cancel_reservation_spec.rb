@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Mobilepay::Client::CancelReservation do
     describe '.cancel_reservation' do
         let(:client) { Mobilepay::Client.new(merchant_id: '111', subscription_key: '222') }

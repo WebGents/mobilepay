@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Mobilepay::Client do
     let(:client) { Mobilepay::Client.new }
 

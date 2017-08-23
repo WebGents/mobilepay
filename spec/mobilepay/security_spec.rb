@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Mobilepay::Security do
     let(:security) { Mobilepay::Security.new }
 

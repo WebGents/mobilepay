@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Mobilepay::Client::CaptureAmount do
     describe '.capture_amount' do
         let(:client) { Mobilepay::Client.new(merchant_id: '111', subscription_key: '222') }

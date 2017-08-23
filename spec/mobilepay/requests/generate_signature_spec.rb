@@ -1,8 +1,6 @@
-require 'spec_helper'
-
 describe Mobilepay::Requests::GenerateSignature do
     describe '.generate_signature' do
-        let(:client) { Mobilepay::Client.new privatekey: OpenSSL::PKey::RSA.generate(2048) }
+        let(:client) { Mobilepay::Client.new privatekey: "#{Dir.pwd}/spec/fixtures/key.pvk" }
         let(:uri) { client.send(:generate_uri, '/merchants/111/orders/222') }
         let(:req) { client.send(:generate_request, :get, uri) }
 

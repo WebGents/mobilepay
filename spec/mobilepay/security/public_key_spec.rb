@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Mobilepay::Security::PublicKey do
     describe '.public_key' do
         let(:security) { Mobilepay::Security.new(subscription_key: '222') }
