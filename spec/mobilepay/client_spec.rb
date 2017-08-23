@@ -10,6 +10,14 @@ describe Mobilepay::Client do
             expect(client.subscription_key).to eq ''
         end
 
+        it 'assigns privatekey to @privatekey' do
+            expect(client.privatekey).to eq nil
+        end
+
+        it 'assigns test_mode to @test_mode' do
+            expect(client.test_mode).to eq false
+        end
+
         it 'assigns base_uri to @base_uri' do
             expect(client.base_uri).to eq 'https://api.mobeco.dk/appswitch/api/v1'
         end
@@ -123,17 +131,27 @@ describe Mobilepay::Client do
         end
 
         context '.generate_headers' do
-            let(:uri) { client.send(:generate_uri, '/merchants/111/orders/222') }
+            let(:test_client) { Mobilepay::Client.new test_mode: true, privatekey: "#{Dir.pwd}/spec/fixtures/key.pvk" }
+            let(:uri) { test_client.send(:generate_uri, '/merchants/111/orders/222') }
             let(:body) { '' }
-            let(:base_req) { client.send(:generate_request, :get, uri) }
-            let(:req) { client.send(:generate_headers, base_req, body) }
+            let(:base_req) { test_client.send(:generate_request, :get, uri) }
+            let(:req) { test_client.send(:generate_headers, base_req, body) }
 
             it 'contains content-type' do
                 expect(req.to_hash['content-type']).to eq ['application/json']
             end
 
             it 'contains ocp-apim-subscription-key' do
-                expect(req.to_hash['ocp-apim-subscription-key']).to eq [client.subscription_key]
+                expect(req.to_hash['ocp-apim-subscription-key']).to eq [test_client.subscription_key]
+            end
+
+            it 'contains test-mode' do
+                puts req.to_hash
+                expect(req.to_hash['test-mode']).to eq [true]
+            end
+
+            it 'contains AuthenticationSignature' do
+                expect(req.to_hash['authenticationsignature'][0]).to_not eq ''
             end
 
             it 'contains body' do

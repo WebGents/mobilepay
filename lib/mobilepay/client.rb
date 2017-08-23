@@ -19,12 +19,13 @@ module Mobilepay
         include Mobilepay::Requests
         include Mobilepay::Requests::GenerateSignature
 
-        attr_reader :merchant_id, :subscription_key, :privatekey, :base_uri
+        attr_reader :merchant_id, :subscription_key, :privatekey, :test_mode, :base_uri
 
         def initialize(args = {})
             @merchant_id = args[:merchant_id] || ''
             @subscription_key = args[:subscription_key] || ''
             @privatekey = args[:privatekey]
+            @test_mode = args[:test_mode] || false
             @base_uri = 'https://api.mobeco.dk/appswitch/api/v1'
         end
 

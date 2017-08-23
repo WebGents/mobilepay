@@ -28,6 +28,7 @@ module Mobilepay
             req['Content-Type'] = 'application/json'
             req['Ocp-Apim-Subscription-Key'] = subscription_key
             req['AuthenticationSignature'] = generate_signature(req) unless privatekey.nil?
+            req['Test-mode'] = test_mode if test_mode == true
             req.body = body
             req
         end
