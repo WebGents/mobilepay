@@ -225,7 +225,7 @@ Request for canceling previously made reservations is #cancel_reservation.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/kortirso/mobilepay.
+Bug reports and pull requests are welcome on GitHub at https://github.com/WebGents/mobilepay.
 
 ## License
 
