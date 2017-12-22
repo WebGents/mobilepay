@@ -146,8 +146,7 @@ describe Mobilepay::Client do
             end
 
             it 'contains test-mode' do
-                puts req.to_hash
-                expect(req.to_hash['test-mode']).to eq [true]
+                expect(req.to_hash['test-mode']).to eq ['true']
             end
 
             it 'contains AuthenticationSignature' do
