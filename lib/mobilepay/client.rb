@@ -1,50 +1,41 @@
-require 'json'
+require 'httparty'
 require_relative 'client/payment_status'
 require_relative 'client/payment_transactions'
 require_relative 'client/reservations'
 require_relative 'client/refund_amount'
 require_relative 'client/capture_amount'
 require_relative 'client/cancel_reservation'
-require_relative 'requests'
 require_relative 'requests/generate_signature'
 
 module Mobilepay
+    # Clients requests
     class Client
+        include HTTParty
         include Mobilepay::Client::PaymentStatus
         include Mobilepay::Client::PaymentTransactions
         include Mobilepay::Client::Reservations
         include Mobilepay::Client::RefundAmount
         include Mobilepay::Client::CaptureAmount
         include Mobilepay::Client::CancelReservation
-        include Mobilepay::Requests
         include Mobilepay::Requests::GenerateSignature
 
-        attr_reader :merchant_id, :subscription_key, :privatekey, :test_mode, :base_uri
+        base_uri 'https://api.mobeco.dk/appswitch/api/v1'
+        format :json
+
+        attr_reader :merchant_id, :privatekey, :headers, :body
 
         def initialize(args = {})
-            @merchant_id = args[:merchant_id] || ''
-            @subscription_key = args[:subscription_key] || ''
+            @merchant_id = args[:merchant_id]
             @privatekey = args[:privatekey]
-            @test_mode = args[:test_mode] || false
-            @base_uri = 'https://api.mobeco.dk/appswitch/api/v1'
+            @headers = { 'Ocp-Apim-Subscription-Key' => args[:subscription_key], 'Content-Type' => 'application/json' }
+            headers['Test-mode'] = 'true' if args[:test_mode] == true
+            @body = ''
         end
 
         private
 
-        def call(req, address, args = {})
-            response = case req
-                when :get, :put, :delete then http_request(req, address, args)
-                else raise Failure, 'Undefined  type for call'
-            end
-            check_response(response)
-            response
-        end
-
-        def check_response(response)
-            if response.code != '200'
-                error_message = response.body.empty? ? response.code : response.body
-                raise Failure, error_message
-            end
+        def generate_headers(uri)
+            headers.merge('AuthenticationSignature' => generate_signature(uri))
         end
 
         def check_args(args)

@@ -1,6 +1,6 @@
 describe Mobilepay::Client::PaymentStatus do
     describe '.payment_status' do
-        let(:client) { Mobilepay::Client.new(merchant_id: '111', subscription_key: '222') }
+        let(:client) { Mobilepay::Client.new(merchant_id: '111', subscription_key: '222', privatekey: 'spec/fixtures/key.pvk') }
 
         context 'for bad request' do
             context 'for bad params' do
@@ -15,10 +15,10 @@ describe Mobilepay::Client::PaymentStatus do
 
         context 'for correct request' do
             it 'returns the status for a specific payment' do
-                stub_request(:get, 'https://api.mobeco.dk/appswitch/api/v1/merchants/111/orders/333').
-                    to_return(status: 200, body: '{"LatestPaymentStatus": "Captured","TransactionId": "61872634691623746","OriginalAmount": 123.45}', headers: {})
+                stub_request(:get, 'https://api.mobeco.dk/appswitch/api/v1/merchants/111/orders/333')
+                    .to_return(status: 200, body: '{"LatestPaymentStatus": "Captured","TransactionId": "61872634691623746","OriginalAmount": 123.45}', headers: {})
 
-                expect(client.payment_status(order_id: '333')).to eq("LatestPaymentStatus"=>"Captured","TransactionId"=>"61872634691623746","OriginalAmount"=>123.45)
+                expect(client.payment_status(order_id: '333')).to eq('LatestPaymentStatus' => 'Captured', 'TransactionId' => '61872634691623746', 'OriginalAmount' => 123.45)
             end
         end
     end
