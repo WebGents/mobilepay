@@ -10,16 +10,15 @@ module Mobilepay
         base_uri 'https://api.mobeco.dk/merchantsecurity/api'
         format :json
 
-        attr_reader :headers, :uri, :body
+        attr_reader :headers, :uri
 
         def initialize(args = {})
             @headers = { 'Ocp-Apim-Subscription-Key' => args[:subscription_key], 'Content-Type' => 'application/json' }
             @uri = '/publickey'
-            @body = ''
         end
 
         def public_key
-            response = self.class.get(uri, headers: headers, body: body)
+            response = self.class.get(uri, query: {}, headers: headers)
             response.parsed_response
         end
     end
