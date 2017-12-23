@@ -32,7 +32,6 @@ Or install it yourself as:
 
 ```ruby
   require 'mobilepay'
-  require 'jose'
   client = Mobilepay::Client.new merchant_id: 'merchant_id', subscription_key: 'subscription_key', privatekey: 'key.pvk', test_mode: true
 ```
     subscription_key - Subscription Key for MobilePay, required
