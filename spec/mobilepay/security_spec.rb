@@ -1,5 +1,5 @@
 describe Mobilepay::Security do
-    let(:security) { Mobilepay::Security.new }
+    let(:security) { Mobilepay::Security.new(subscription_key: '222', privatekey: 'spec/fixtures/key.pvk') }
 
     describe '.initialize' do
     end
@@ -9,12 +9,12 @@ describe Mobilepay::Security do
             context 'for bad request' do
                 it 'returns hash error with message' do
                     stub_request(:get, 'https://api.mobeco.dk/merchantsecurity/api/publickey')
-                        .to_return(status: 401, body: '{"statusCode":401, "message":"Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."}', headers: {})
+                        .to_return(status: 401, body: '{"error":401}', headers: {})
 
                     response = security.public_key
 
                     expect(response.is_a?(Hash)).to eq true
-                    expect(response['message']).to eq 'Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.'
+                    expect(response[:error]).to eq '401'
                 end
             end
 
