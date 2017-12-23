@@ -1,37 +1,30 @@
-require 'net/http'
-
 module Mobilepay
+    # Common requests for classes
     module Requests
-
-        private
-
-        def http_request(req, address, args = {})
-            uri = generate_uri(address)
-            req = generate_request(req, uri)
-            req = generate_headers(req, args[:body])
-            Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
+        private def request(type, uri)
+            add_signature(uri)
+            response = send_request(type, uri)
+            check_response(response)
+            response
         end
 
-        def generate_uri(address = '')
-            URI("#{base_uri}#{address}")
+        private def add_signature(uri)
+            headers['AuthenticationSignature'] = generate_signature(uri)
         end
 
-        def generate_request(req, uri)
-            case req
-                when :get then Net::HTTP::Get.new(uri)
-                when :put then Net::HTTP::Put.new(uri)
-                when :delete then Net::HTTP::Delete.new(uri)
+        private def send_request(type, uri)
+            case type
+                when :get then self.class.get(uri, query: {}, headers: headers)
+                when :put then self.class.put(uri, query: {}, headers: headers)
+                when :delete then self.class.delete(uri, query: {}, headers: headers)
             end
         end
 
-        def generate_headers(req, body)
-            req['Content-Type'] = 'application/json'
-            req['Ocp-Apim-Subscription-Key'] = subscription_key
-            req['AuthenticationSignature'] = generate_signature(req) unless privatekey.nil?
-            req['Test-mode'] = test_mode if test_mode == true
-            req.body = body
-            req
+        private def check_response(response)
+            if response.code != 200
+                error_message = response.message.empty? ? response.code : response.message
+                raise Failure, error_message
+            end
         end
-
     end
 end

@@ -1,36 +1,25 @@
-require 'json'
+require 'httparty'
 require_relative 'security/public_key'
 require_relative 'requests'
 require_relative 'requests/generate_signature'
 
 module Mobilepay
+    # Security requests
     class Security
+        include HTTParty
         include Mobilepay::Security::PublicKey
         include Mobilepay::Requests
         include Mobilepay::Requests::GenerateSignature
 
-        attr_reader :subscription_key, :privatekey, :test_mode, :base_uri
+        base_uri 'https://api.mobeco.dk/merchantsecurity/api'
+        format :json
+
+        attr_reader :privatekey, :headers, :body
 
         def initialize(args = {})
-            @subscription_key = args[:subscription_key] || ''
-            @privatekey = nil
-            @test_mode = false
-            @base_uri = 'https://api.mobeco.dk/merchantsecurity/api'
-        end
-
-        private
-
-        def call
-            response = http_request(:get, '/publickey')
-            check_response(response)
-            response
-        end
-
-        def check_response(response)
-            if response.code != '200'
-                error_message = response.body.empty? ? response.code : JSON.parse(response.body)['message']
-                raise Failure, error_message
-            end
+            @privatekey = args[:privatekey]
+            @headers = { 'Ocp-Apim-Subscription-Key' => args[:subscription_key], 'Content-Type' => 'application/json' }
+            @body = ''
         end
     end
 end

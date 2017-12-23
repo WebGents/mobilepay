@@ -1,17 +1,15 @@
 module Mobilepay
     class Client
+        # Reservations_CancelReservation
         module CancelReservation
-
-            # Reservations_CancelReservation
             # Cancels a specific reservation
             def cancel_reservation(args = {})
                 check_args(order_id: args[:order_id])
-                response = call(:delete, "/reservations/merchants/#{merchant_id}/orders/#{args[:order_id]}", { body: '' })
-                JSON.parse(response.body)
+                response = request(:delete, "/reservations/merchants/#{merchant_id}/orders/#{args[:order_id]}")
+                response.parsed_response
             rescue Failure => ex
                 return { error: ex.message }
             end
-
         end
     end
 end

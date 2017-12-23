@@ -1,16 +1,14 @@
 module Mobilepay
     class Security
+        # Security_PublicKey
         module PublicKey
-
-            # Secutiry_PublicKey
-            # Get MobilePay's public key to use when signing up new merchants
+            # Gets the public key
             def public_key
-                response = call
-                JSON.parse(response.body)
+                response = request(:get, '/publickey')
+                response.parsed_response
             rescue Failure => ex
                 return { error: ex.message }
             end
-
         end
     end
 end
